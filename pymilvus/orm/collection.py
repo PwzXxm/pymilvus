@@ -42,7 +42,7 @@ from .connections import connections
 from .constants import UNLIMITED
 from .future import MutationFuture, SearchFuture
 from .index import Index
-from .iterator import QueryIterator, SearchIterator
+from .iterator import QueryIterator, SearchIterator, SearchIteratorV2
 from .mutation import MutationResult
 from .partition import Partition
 from .prepare import Prepare
@@ -969,26 +969,33 @@ class Collection:
         output_fields: Optional[List[str]] = None,
         timeout: Optional[float] = None,
         round_decimal: int = -1,
+        use_v1: Optional[bool] = False,
         **kwargs,
     ):
         if expr is not None and not isinstance(expr, str):
             raise DataTypeNotMatchException(message=ExceptionsMessage.ExprType % type(expr))
-        return SearchIterator(
-            connection=self._get_connection(),
-            collection_name=self._name,
-            data=data,
-            ann_field=anns_field,
-            param=param,
-            batch_size=batch_size,
-            limit=limit,
-            expr=expr,
-            partition_names=partition_names,
-            output_fields=output_fields,
-            timeout=timeout,
-            round_decimal=round_decimal,
-            schema=self._schema_dict,
+
+        iterator_params = {
+            'connection': self._get_connection(),
+            'collection_name': self._name,
+            'data': data,
+            'anns_field': anns_field,
+            'param': param,
+            'batch_size': batch_size,
+            'limit': limit,
+            'expr': expr,
+            'partition_names': partition_names,
+            'output_fields': output_fields,
+            'timeout': timeout,
+            'round_decimal': round_decimal,
+            'schema': self._schema_dict,
             **kwargs,
-        )
+        }
+
+        if use_v1:
+            return SearchIterator(**iterator_params)
+        else:
+            return SearchIteratorV2(**iterator_params)
 
     def query(
         self,
