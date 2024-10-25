@@ -770,6 +770,10 @@ class SearchIteratorV2:
         check_batch_size(batch_size)
         # check_set_flag(self, "_print_iterator_cursor", kwargs, PRINT_ITERATOR_CURSOR)
 
+        # delete limit from incoming for compatibility
+        if MILVUS_LIMIT in kwargs:
+            del kwargs[MILVUS_LIMIT]
+
         self._conn = connection
         self._params = {
             'collection_name': collection_name,
