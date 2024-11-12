@@ -34,6 +34,7 @@ from .constants import (
     ITER_SEARCH_BATCH_SIZE_KEY,
     ITER_SEARCH_LAST_BOUND_KEY,
     ITER_SEARCH_TOKEN_KEY,
+    ITER_SEARCH_TTL_KEY,
     MAX_BATCH_SIZE,
     MAX_FILTERED_IDS_COUNT_ITERATION,
     MAX_TRY_TIME,
@@ -761,6 +762,7 @@ class SearchIteratorV2:
         partition_names: Optional[List[str]] = None,
         output_fields: Optional[List[str]] = None,
         timeout: Optional[float] = None,
+        ttl: Optional[int] = None,
         round_decimal: int = -1,
         **kwargs,
     ) -> SearchIteratorV2:
@@ -789,6 +791,7 @@ class SearchIteratorV2:
             ITERATOR_FIELD: True,
             ITER_SEARCH_V2_KEY: True,
             ITER_SEARCH_BATCH_SIZE_KEY: batch_size,
+            ITER_SEARCH_TTL_KEY: ttl,
             GUARANTEE_TIMESTAMP: 0,
             **kwargs,
         }

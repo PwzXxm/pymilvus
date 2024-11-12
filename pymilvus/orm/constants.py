@@ -52,6 +52,7 @@ ITER_SEARCH_V2_KEY = "search_iter_v2"
 ITER_SEARCH_BATCH_SIZE_KEY = "search_iter_batch_size"
 ITER_SEARCH_LAST_BOUND_KEY = "search_iter_last_bound"
 ITER_SEARCH_TOKEN_KEY = "search_iter_token"
+ITER_SEARCH_TTL_KEY = "search_iter_ttl"
 PRINT_ITERATOR_CURSOR = "print_iterator_cursor"
 DEFAULT_MAX_L2_DISTANCE = 99999999.0
 DEFAULT_MIN_IP_DISTANCE = -99999999.0
