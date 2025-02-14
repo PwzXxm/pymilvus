@@ -103,6 +103,7 @@ class DataType(IntEnum):
     ARRAY = schema_pb2.Array
     JSON = schema_pb2.JSON
     GEOMETRY = schema_pb2.Geometry
+    TEXT = schema_pb2.Text
 
     BINARY_VECTOR = schema_pb2.BinaryVector
     FLOAT_VECTOR = schema_pb2.FloatVector
