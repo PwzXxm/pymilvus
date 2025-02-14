@@ -98,6 +98,8 @@ class DataType(IntEnum):
     VARCHAR = 21
     ARRAY = 22
     JSON = 23
+    # GEOMETRY = 24 # reserved in milvus-proto
+    TEXT = 25
 
     BINARY_VECTOR = 100
     FLOAT_VECTOR = 101

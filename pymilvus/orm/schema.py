@@ -436,6 +436,7 @@ class FieldSchema:
             DataType.ARRAY,
             DataType.SPARSE_FLOAT_VECTOR,
             DataType.INT8_VECTOR,
+            DataType.TEXT,
         ):
             return
         if not self._kwargs:
@@ -625,7 +626,7 @@ class Function:
             raise ParamError(message=ExceptionsMessage.BM25FunctionIncorrectInputOutputCount)
 
         for field in schema.fields:
-            if field.name == self._input_field_names[0] and field.dtype != DataType.VARCHAR:
+            if field.name == self._input_field_names[0] and field.dtype not in (DataType.VARCHAR, DataType.TEXT):
                 raise ParamError(message=ExceptionsMessage.BM25FunctionIncorrectInputFieldType)
             if (
                 field.name == self._output_field_names[0]
@@ -640,7 +641,7 @@ class Function:
             )
 
         for field in schema.fields:
-            if field.name == self._input_field_names[0] and field.dtype != DataType.VARCHAR:
+            if field.name == self._input_field_names[0] and field.dtype not in (DataType.VARCHAR, DataType.TEXT):
                 raise ParamError(
                     message=ExceptionsMessage.TextEmbeddingFunctionIncorrectInputFieldType
                 )
@@ -877,7 +878,7 @@ def infer_default_value_bydata(data: Any):
         default_data.float_data = data
     elif d_type is DataType.DOUBLE:
         default_data.double_data = data
-    elif d_type is DataType.VARCHAR:
+    elif d_type in (DataType.VARCHAR, DataType.TEXT):
         default_data.string_data = data
     else:
         raise ParamError(message=f"Default value unsupported data type: {d_type}")

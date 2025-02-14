@@ -68,6 +68,7 @@ class FieldSchema:
                 if type_param.key in [Config.MaxVarCharLengthKey] and raw.data_type in (
                     DataType.VARCHAR,
                     DataType.ARRAY,
+                    DataType.TEXT,
                 ):
                     self.params[type_param.key] = int(type_param.value)
 
@@ -578,7 +579,7 @@ class SearchResult(list):
                 )
                 continue
 
-            if dtype == DataType.VARCHAR:
+            if dtype in (DataType.VARCHAR, DataType.TEXT):
                 field2data[name] = (
                     apply_valid_data(
                         scalars.string_data.data[start:end], field.valid_data, start, end
@@ -824,7 +825,7 @@ def extract_array_row_data(
             row.append(ith_array.double_data.data)
             continue
 
-        if element_type in (DataType.STRING, DataType.VARCHAR):
+        if element_type in (DataType.STRING, DataType.VARCHAR, DataType.TEXT):
             row.append(ith_array.string_data.data)
             continue
     return row

@@ -405,7 +405,8 @@ def pack_field_value_to_field_data(
                 message=ExceptionsMessage.FieldDataInconsistent
                 % (field_name, "int8_vector", type(field_value))
             ) from e
-    elif field_type == DataType.VARCHAR:
+    elif field_type in (DataType.VARCHAR, DataType.TEXT):
+        field_name_str = "varchar" if field_type == DataType.VARCHAR else "text"
         try:
             if field_value is None:
                 field_data.scalars.string_data.data.extend([])
@@ -416,7 +417,7 @@ def pack_field_value_to_field_data(
         except (TypeError, ValueError) as e:
             raise DataNotMatchException(
                 message=ExceptionsMessage.FieldDataInconsistent
-                % (field_name, "varchar", type(field_value))
+                % (field_name, field_name_str, type(field_value))
             ) from e
     elif field_type == DataType.JSON:
         try:
@@ -542,7 +543,8 @@ def entity_to_field_data(entity: Any, field_info: Any, num_rows: int):
                 message=ExceptionsMessage.FieldDataInconsistent
                 % (field_name, "bfloat16_vector", type(entity.get("values")[0]))
             ) from e
-    elif entity_type == DataType.VARCHAR:
+    elif entity_type in (DataType.VARCHAR, DataType.TEXT):
+        field_name_str = "varchar" if entity_type == DataType.VARCHAR else "text"
         try:
             field_data.scalars.string_data.data.extend(
                 entity_to_str_arr(entity, field_info, CHECK_STR_ARRAY)
@@ -550,7 +552,7 @@ def entity_to_field_data(entity: Any, field_info: Any, num_rows: int):
         except (TypeError, ValueError) as e:
             raise DataNotMatchException(
                 message=ExceptionsMessage.FieldDataInconsistent
-                % (field_name, "varchar", type(entity.get("values")[0]))
+                % (field_name, field_name_str, type(entity.get("values")[0]))
             ) from e
     elif entity_type == DataType.JSON:
         try:
@@ -701,7 +703,7 @@ def extract_row_data_from_fields_data(
             return
 
         if (
-            field_data.type == DataType.VARCHAR
+            field_data.type in (DataType.VARCHAR, DataType.TEXT)
             and len(field_data.scalars.string_data.data) >= index
         ):
             if len(field_data.valid_data) > 0 and field_data.valid_data[index] is False:
